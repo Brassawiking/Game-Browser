@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <game>
 	<meta>
 	</meta>
 	
 	<viewport>
-		<cube></cube>
-	<viewport>
+		<triangle x="0,5"></triangle>
+	</viewport>
 </game>

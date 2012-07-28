@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 
 using OpenTK;
 using OpenTK.Graphics;
@@ -9,18 +10,19 @@ using OpenTK.Input;
 
 using Jint;
 
-namespace StarterKit
+namespace GameBrowser
 {
     class GameBrowser : GameWindow
     {
+        public XmlDocument m_dom;
+        public JintEngine m_js;
+
         public GameBrowser()
             : base(800, 600, GraphicsMode.Default, "Game Browser")
         {
             VSync = VSyncMode.On;
         }
 
-        /// <summary>Load resources here.</summary>
-        /// <param name="e">Not used.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -28,16 +30,41 @@ namespace StarterKit
             GL.ClearColor(0.1f, 0.2f, 0.5f, 0.0f);
             GL.Enable(EnableCap.DepthTest);
 
-            object result = new JintEngine().Run("return 21 * 2");
-            Console.WriteLine(result); // Displays 42
+            m_js = new JintEngine();
+            m_js.SetParameter("x", 0.0f);
+            m_js.SetFunction("moveX", new Action<double>(x => {
+                var triangle = m_dom.GetElementsByTagName("triangle")[0];
+                foreach (XmlAttribute attr in triangle.Attributes)
+                {
+                    if (attr.Name == "x")
+                    {
+                        attr.Value = x.ToString();
+                    }
+                }
+            
+            }));
+
+            
+            m_js.SetFunction("moveX", new Action<double>(moveX));
+
+            var reader = new XmlTextReader("../../game.xml");
+            m_dom = new XmlDocument();
+            m_dom.Load(reader);
+            reader.Close();
         }
 
-        /// <summary>
-        /// Called when your window is resized. Set your viewport here. It is also
-        /// a good place to set up your projection matrix (which probably changes
-        /// along when the aspect ratio of your window).
-        /// </summary>
-        /// <param name="e">Not used.</param>
+        protected void moveX(double x)
+        {
+            var triangle = m_dom.GetElementsByTagName("triangle")[0];
+            foreach (XmlAttribute attr in triangle.Attributes)
+            {
+                if (attr.Name == "x")
+                {
+                    attr.Value = x.ToString();
+                }
+            }
+        }
+               
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
@@ -49,22 +76,18 @@ namespace StarterKit
             GL.LoadMatrix(ref projection);
         }
 
-        /// <summary>
-        /// Called when it is time to setup the next frame. Add you game logic here.
-        /// </summary>
-        /// <param name="e">Contains timing information for framerate independent logic.</param>
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
 
             if (Keyboard[Key.Escape])
+            {
                 Exit();
+            }
+
+            m_js.Run("x = x+0.005; moveX(x);");                
         }
 
-        /// <summary>
-        /// Called when it is time to render the next frame. Add your rendering code here.
-        /// </summary>
-        /// <param name="e">Contains timing information.</param>
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -75,20 +98,35 @@ namespace StarterKit
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
 
-            GL.Begin(BeginMode.Triangles);
+            var viewport = m_dom.GetElementsByTagName("viewport").Item(0);
+            var nodes = viewport.ChildNodes;
 
-            GL.Color3(1.0f, 1.0f, 0.0f); GL.Vertex3(-1.0f, -1.0f, 4.0f);
-            GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(1.0f, -1.0f, 4.0f);
-            GL.Color3(0.2f, 0.9f, 1.0f); GL.Vertex3(0.0f, 1.0f, 4.0f);
 
-            GL.End();
+            foreach(XmlNode node in nodes) 
+            {
+                if (node.Name == "triangle")
+                {
+                    var x = 0.0;
+                    foreach (XmlAttribute attr in node.Attributes)
+                    {
+                        if (attr.Name == "x")
+                        {
+                            x = float.Parse(attr.Value);
+                        }
+                    }
+                    GL.Begin(BeginMode.Triangles);
+
+                    GL.Color3(1.0f, 1.0f, 0.0f); GL.Vertex3(x-1.0f, -1.0f, 4.0f);
+                    GL.Color3(1.0f, 0.0f, 0.0f); GL.Vertex3(x+1.0f, -1.0f, 4.0f);
+                    GL.Color3(0.2f, 0.9f, 1.0f); GL.Vertex3(x+0.0f, 1.0f, 4.0f);
+
+                    GL.End();
+                }
+            }
 
             SwapBuffers();
         }
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
         [STAThread]
         static void Main()
         {
