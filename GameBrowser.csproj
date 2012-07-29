@@ -51,8 +51,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DOM\DOMTree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Render\BoxModel.cs" />
+    <Compile Include="Render\Element\BoxElement.cs" />
+    <Compile Include="Render\Element\CameraElement.cs" />
+    <Compile Include="Render\Element\IRenderElement.cs" />
+    <Compile Include="Render\Element\ViewportElement.cs" />
+    <Compile Include="Render\RenderTree.cs" />
+    <Compile Include="Render\RenderTreeBuilder.cs" />
+    <Compile Include="Style\StyleRule.cs" />
+    <Compile Include="System\GameBrowser.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Script\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
