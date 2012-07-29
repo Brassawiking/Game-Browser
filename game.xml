@@ -2,6 +2,13 @@
 <game>
 	<meta>
 		<style>
+			<stylerule value="box">
+				<rule key="color" value="1" />
+				<rule key="x" value="1" />
+			</stylerule>
+			<stylerule value="#hej">
+				<rule key="color" value="0,9" />
+			</stylerule>
 		</style>
 	</meta>
 	

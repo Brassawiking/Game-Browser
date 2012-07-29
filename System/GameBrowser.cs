@@ -3,17 +3,21 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using GameBrowser.DOM;
+using GameBrowser.Style;
 using GameBrowser.Render;
 
 namespace GameBrowser.System
 {
     class GameBrowser : GameWindow
     {
-        private DOMTree m_domTree; 
-        private RenderTree m_renderTree;
         private string m_sourcePath;
 
+        private DOMTree m_domTree;
+        private StyleRules m_styleRules;
+        private RenderTree m_renderTree;
+
         private DOMTreeBuilder m_domTreeBuilder;
+        private StyleRulesBuilder m_styleRulesBuilder;
         private RenderTreeBuilder m_renderTreeBuilder;
 
 
@@ -22,6 +26,7 @@ namespace GameBrowser.System
         {
             VSync = VSyncMode.On;
             m_domTreeBuilder = new DOMTreeBuilder();
+            m_styleRulesBuilder = new StyleRulesBuilder();
             m_renderTreeBuilder = new RenderTreeBuilder();
         }
 
@@ -62,7 +67,8 @@ namespace GameBrowser.System
         {
             m_sourcePath = sourcePath;
             m_domTree = m_domTreeBuilder.Build(m_sourcePath);
-            m_renderTree = m_renderTreeBuilder.Build(m_domTree);
+            m_styleRules = m_styleRulesBuilder.Build(m_domTree);
+            m_renderTree = m_renderTreeBuilder.Build(m_domTree, m_styleRules);
         }
 
         private void ReloadGame()

@@ -13,6 +13,7 @@ namespace GameBrowser.DOM.Element
         public virtual string TagName { get { return ""; } }
         public string ID { get; set; }
         public IList<string> Class { get; set; }
+        public string InlineStyle { get; set; }
 
         public IDOMElement()
         {
