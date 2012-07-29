@@ -3,9 +3,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameBrowser.Render.Element
 {
-    public class BoxElement : IRenderElement
+    public class BoxRenderElement : IRenderElement
     {
-        public BoxElement(RenderTree renderTree) : base(renderTree) { }
+        public BoxRenderElement(RenderTree renderTree) : base(renderTree) { }
 
         public override void Render(FrameEventArgs e)
         {

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <game>
 	<meta>
+		<style>
+		</style>
 	</meta>
 	
 	<viewport>
-		<triangle x="0,5"></triangle>
+		<camera>
+			<box id="hej"></box>
+		</camera>
 	</viewport>
 </game>

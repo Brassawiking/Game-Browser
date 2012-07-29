@@ -1,71 +1,34 @@
 ﻿using System;
-using System.Xml;
-
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Audio;
-using OpenTK.Audio.OpenAL;
 using OpenTK.Input;
-
-using Jint;
-
+using GameBrowser.DOM;
 using GameBrowser.Render;
 
 namespace GameBrowser.System
 {
     class GameBrowser : GameWindow
     {
-        public XmlDocument m_dom;
-        public JintEngine m_js;
-        public RenderTree m_renderTree; 
+        private DOMTree m_domTree; 
+        private RenderTree m_renderTree;
+        private string m_sourcePath;
+
+        private DOMTreeBuilder m_domTreeBuilder;
+        private RenderTreeBuilder m_renderTreeBuilder;
+
 
         public GameBrowser()
             : base(800, 600, GraphicsMode.Default, "Game Browser")
         {
             VSync = VSyncMode.On;
+            m_domTreeBuilder = new DOMTreeBuilder();
+            m_renderTreeBuilder = new RenderTreeBuilder();
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
-            m_js = new JintEngine();
-            m_js.SetParameter("x", 0.0f);
-            m_js.SetFunction("moveX", new Action<double>(x =>
-            {
-                var triangle = m_dom.GetElementsByTagName("triangle")[0];
-                foreach (XmlAttribute attr in triangle.Attributes)
-                {
-                    if (attr.Name == "x")
-                    {
-                        attr.Value = x.ToString();
-                    }
-                }
-
-            }));
-
-
-            m_js.SetFunction("moveX", new Action<double>(moveX));
-
-            var reader = new XmlTextReader("../../game.xml");
-            m_dom = new XmlDocument();
-            m_dom.Load(reader);
-            reader.Close();
-
-            m_renderTree = new RenderTreeBuilder().Build();
-        }
-
-        protected void moveX(double x)
-        {
-            var triangle = m_dom.GetElementsByTagName("triangle")[0];
-            foreach (XmlAttribute attr in triangle.Attributes)
-            {
-                if (attr.Name == "x")
-                {
-                    attr.Value = x.ToString();
-                }
-            }
+            LoadGame("../../game.xml");
         }
 
         protected override void OnResize(EventArgs e)
@@ -82,8 +45,10 @@ namespace GameBrowser.System
             {
                 Exit();
             }
-
-            m_js.Run("x = x+0.005; moveX(x);");
+            if (Keyboard[Key.F5])
+            {
+                ReloadGame();
+            }
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -91,6 +56,18 @@ namespace GameBrowser.System
             base.OnRenderFrame(e);            
             m_renderTree.Render(e);
             SwapBuffers();
+        }
+
+        private void LoadGame(string sourcePath)
+        {
+            m_sourcePath = sourcePath;
+            m_domTree = m_domTreeBuilder.Build(m_sourcePath);
+            m_renderTree = m_renderTreeBuilder.Build(m_domTree);
+        }
+
+        private void ReloadGame()
+        {
+            LoadGame(m_sourcePath);
         }
     }
 }

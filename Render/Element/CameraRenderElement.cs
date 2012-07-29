@@ -4,9 +4,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameBrowser.Render.Element
 {
-    public class CameraElement : IRenderElement
+    public class CameraRenderElement : IRenderElement
     {
-        public CameraElement(RenderTree renderTree) : base(renderTree) { }
+        public CameraRenderElement(RenderTree renderTree) : base(renderTree) { }
 
         public override void Render(FrameEventArgs e)
         {

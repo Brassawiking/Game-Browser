@@ -1,17 +1,16 @@
 ﻿using System;
 
-namespace GameBrowser
+namespace GameBrowser.System
 {
-    public class Program
+    public class Application
     {
         [STAThread]
         static void Main()
         {
-            using (GameBrowser.System.GameBrowser gameBrowser = new GameBrowser.System.GameBrowser())
+            using (GameBrowser gameBrowser = new GameBrowser())
             {
                 gameBrowser.Run(30.0);
             }
         }
     }
-    
 }
