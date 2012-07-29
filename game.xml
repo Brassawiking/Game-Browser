@@ -3,11 +3,12 @@
 	<meta>
 		<style>
 			<stylerule value="box">
-				<rule key="color" value="0,5" />
+				<rule key="color" value="0,9" />
 				<rule key="x" value="0,5" />
 			</stylerule>
 			<stylerule value="#hej">
-				<rule key="color" value="0,9" />
+				<rule key="color" value="0,1" />
+				<rule key="x" value="1,5" />
 			</stylerule>
 		</style>
 	</meta>
@@ -15,6 +16,7 @@
 	<viewport>
 		<camera>
 			<box id="hej"></box>
+			<box></box>
 		</camera>
 	</viewport>
 </game>

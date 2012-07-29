@@ -48,7 +48,7 @@ namespace GameBrowser.Render
             var boxElement = new BoxRenderElement(m_renderTree);
             foreach (var styleRule in m_styleRules.Items)
             {
-                if (styleRule.Selector == domElement.TagName)
+                if (styleRule.Selector == domElement.TagName || styleRule.Selector.Remove(0,1) == domElement.ID)
                 {
                     foreach(var rule in styleRule.Rules)
                     {
