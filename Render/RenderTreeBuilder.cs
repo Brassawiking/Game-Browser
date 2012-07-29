@@ -52,10 +52,15 @@ namespace GameBrowser.Render
                 {
                     foreach(var rule in styleRule.Rules)
                     {
-                        if (rule.Key == "color")
+                        switch (rule.Key) 
                         {
-                            boxElement.Color = double.Parse(rule.Value);
-                        }
+                            case "color":
+                                boxElement.Color = double.Parse(rule.Value);
+                                break;
+                            case "x":
+                                boxElement.Box.X = double.Parse(rule.Value);
+                                break;
+                        }                       
                     }
                 }
             }

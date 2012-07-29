@@ -14,10 +14,10 @@ namespace GameBrowser.Render.Element
             GL.Begin(BeginMode.Quads);
 
             GL.Color3(Color, 1.0-Color, 0); 
-            GL.Vertex3(-1.0f, -1.0f, -4.0f);
-            GL.Vertex3( 1.0f, -1.0f, -4.0f);
-            GL.Vertex3( 1.0f,  1.0f, -4.0f);
-            GL.Vertex3(-1.0f,  1.0f, -4.0f);
+            GL.Vertex3(Box.X-1.0f, -1.0f, -4.0f);
+            GL.Vertex3(Box.X+1.0f, -1.0f, -4.0f);
+            GL.Vertex3(Box.X+1.0f,  1.0f, -4.0f);
+            GL.Vertex3(Box.X-1.0f,  1.0f, -4.0f);
 
             GL.End();
             base.Render(e);

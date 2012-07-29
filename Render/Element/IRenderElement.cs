@@ -13,6 +13,7 @@ namespace GameBrowser.Render.Element
         public IRenderElement(RenderTree renderTree)
         {
             Children = new List<IRenderElement>();
+            Box = new BoxModel();
             RenderTree = renderTree;
         }
 

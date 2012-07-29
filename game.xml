@@ -3,8 +3,8 @@
 	<meta>
 		<style>
 			<stylerule value="box">
-				<rule key="color" value="1" />
-				<rule key="x" value="1" />
+				<rule key="color" value="0,5" />
+				<rule key="x" value="0,5" />
 			</stylerule>
 			<stylerule value="#hej">
 				<rule key="color" value="0,9" />
